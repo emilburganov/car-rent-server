@@ -5,7 +5,7 @@ namespace App\Traits;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\MessageBag;
 
-trait ResponseTrait
+trait Responsible
 {
     protected function message(string $message, int $code = 200): JsonResponse
     {
