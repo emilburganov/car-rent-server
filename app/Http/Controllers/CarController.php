@@ -14,7 +14,7 @@ class CarController extends Controller
         $cars = Car::all();
 
         return response()->json(
-            CarResource::collection($cars)
+            CarResource::collection($cars),
         );
     }
 }

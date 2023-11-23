@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,9 +19,6 @@ class AuthController extends Controller
             'login' => 'required|string|min:3|max:40|unique:users,login',
             'surname' => 'required|string|min:3|max:60',
             'name' => 'required|string|min:3|max:60',
-            'patronymic' => 'required|string|min:3|max:60',
-            'phone' => 'required|phone:RU|unique:users,phone',
-            'address' => 'required|string|min:3|max:80',
             'password' => 'required|string|min:8|max:100',
             'password_confirmation' => 'required|same:password',
         ]);
@@ -40,7 +38,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
@@ -70,7 +68,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
@@ -85,5 +83,16 @@ class AuthController extends Controller
         ]);
 
         return $this->message('Successful logout.');
+    }
+
+    public function me(Request $request): JsonResponse
+    {
+        $token = $request->bearerToken();
+
+        $user = User::query()->firstWhere('token', $token);
+
+        return response()->json(
+            new UserResource($user),
+        );
     }
 }
