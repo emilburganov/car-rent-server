@@ -18,8 +18,8 @@ return new class extends Migration {
                 ->cascadeOnDelete();
             $table->integer('year');
             $table->string('name');
-            $table->string('consumption');
-            $table->string('horsepower');
+            $table->float('consumption');
+            $table->integer('horsepower');
             $table->foreignId('car_class_id')
                 ->constrained()
                 ->cascadeOnUpdate()

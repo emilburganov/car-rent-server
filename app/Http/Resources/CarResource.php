@@ -16,12 +16,12 @@ class CarResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'car_model_id' => $this->car_model_id,
+            'car_model' => $this->car_model->name,
             'year' => $this->year,
             'consumption' => $this->consumption,
             'horsepower' => $this->horsepower,
-            'car_class_id' => $this->car_class_id,
-            'salon_id' => $this->salon_id,
+            'car_class' => $this->car_class->name,
+            'salon' => $this->salon->name,
         ];
     }
 }

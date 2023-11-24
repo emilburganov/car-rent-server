@@ -28,8 +28,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
+    // Client routes
+    Route::middleware('role:1')->group(function() {
+        Route::get('/cars', [CarController::class, 'index']);
+    });
+
     // Admin routes
     Route::middleware('role:2')->group(function() {
         Route::get('/cars', [CarController::class, 'index']);
+        Route::post('/cars', [CarController::class, 'create']);
+        Route::patch('/cars/{car}', [CarController::class, 'update']);
+        Route::delete('/cars/{car}', [CarController::class, 'destroy']);
     });
 });
