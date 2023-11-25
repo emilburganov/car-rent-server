@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarClassController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarModelController;
+use App\Http\Controllers\SalonController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,5 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/car-models', [CarModelController::class, 'index']);
 
         Route::get('/car-classes', [CarClassController::class, 'index']);
+
+        Route::get('/salons', [SalonController::class, 'index']);
     });
 });
