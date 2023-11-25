@@ -11,9 +11,21 @@ use Illuminate\Support\Facades\Validator;
 
 class CarController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $cars = Car::all();
+        $search = $request->search;
+
+        if (!$search) {
+            $cars = Car::all();
+        } else {
+            $cars = Car::query()
+                ->where("name", "like", '%' . $search . '%')
+                ->orWhereRelation('car_model', 'name', 'like', '%' . $search . '%')
+                ->orWhere('year','like', '%' . $search . '%')
+                ->orWhereRelation('car_class', 'name', 'like', '%' . $search . '%')
+                ->orWhereRelation('salon', 'name', 'like', '%' . $search . '%')
+                ->get();
+        }
 
         return response()->json(
             CarResource::collection($cars),

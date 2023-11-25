@@ -20,7 +20,7 @@ class CarFactory extends Factory
             'car_model_id' => 1,
             'name' => fake()->word(),
             'year' => fake()->year(),
-            'consumption' => fake()->randomFloat(),
+            'consumption' => fake()->randomNumber(),
             'horsepower' => fake()->randomNumber(),
             'car_class_id' => 1,
             'salon_id' => 1,
