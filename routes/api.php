@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarClassController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CarModelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,5 +41,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/cars', [CarController::class, 'create']);
         Route::patch('/cars/{car}', [CarController::class, 'update']);
         Route::delete('/cars/{car}', [CarController::class, 'destroy']);
+
+        Route::get('/car-models', [CarModelController::class, 'index']);
+
+        Route::get('/car-classes', [CarClassController::class, 'index']);
     });
 });
