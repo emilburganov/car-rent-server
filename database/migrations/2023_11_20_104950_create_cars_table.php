@@ -16,7 +16,7 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->integer('year');
+            $table->year('year');
             $table->string('name');
             $table->integer('consumption');
             $table->integer('horsepower');

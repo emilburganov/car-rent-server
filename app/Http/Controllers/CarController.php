@@ -35,13 +35,13 @@ class CarController extends Controller
     public function create(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'car_model_id' => 'required|number|exists:car_models,id',
-            'year' => 'required|number',
+            'car_model_id' => 'required|numeric|exists:car_models,id',
+            'year' => 'required|year',
             'name' => 'required|string|min:3|max:40',
-            'consumption' => 'required|string|min:3|max:40',
-            'horsepower' => 'required|number',
-            'car_class_id' => 'required|number|exists:car_classes,id',
-            'salon_id' => 'required|number|exists:salons,id',
+            'consumption' => 'required|numeric|min:1|max:200',
+            'horsepower' => 'required|numeric|min:1|max:1000',
+            'car_class_id' => 'required|numeric|exists:car_classes,id',
+            'salon_id' => 'required|numeric|exists:salons,id',
         ]);
 
         if ($validator->fails()) {

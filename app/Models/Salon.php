@@ -10,7 +10,7 @@ class Salon extends Model
 {
     use HasFactory;
 
-    public function admin(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

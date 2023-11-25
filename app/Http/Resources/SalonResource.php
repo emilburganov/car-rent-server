@@ -18,7 +18,7 @@ class SalonResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'address' => $this->address,
-            'admin_id' => $this->admin->id,
+            'admin_id' => $this->user->id,
         ];
     }
 }
