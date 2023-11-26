@@ -44,6 +44,12 @@ Route::middleware('auth')->group(function () {
         Route::patch('/cars/{car}', [CarController::class, 'update']);
         Route::delete('/cars/{car}', [CarController::class, 'destroy']);
 
+        Route::get('/rentals', [CarController::class, 'index']);
+        Route::post('/rentals', [CarController::class, 'create']);
+        Route::get('/rentals/{rent}', [CarController::class, 'show']);
+        Route::patch('/rentals/{rent}', [CarController::class, 'update']);
+        Route::delete('/rentals/{rent}', [CarController::class, 'destroy']);
+
         Route::get('/car-models', [CarModelController::class, 'index']);
 
         Route::get('/car-classes', [CarClassController::class, 'index']);
