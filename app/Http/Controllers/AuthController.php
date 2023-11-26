@@ -19,6 +19,7 @@ class AuthController extends Controller
             'login' => 'required|string|min:3|max:40|unique:users,login',
             'surname' => 'required|string|min:3|max:60',
             'name' => 'required|string|min:3|max:60',
+            'patronymic' => 'required|string|min:3|max:60',
             'password' => 'required|string|min:8|max:100',
             'password_confirmation' => 'required|same:password',
         ]);

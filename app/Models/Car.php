@@ -24,4 +24,5 @@ class Car extends Model
         return $this->belongsTo(Salon::class);
     }
     protected $guarded = false;
+    public $timestamps = false;
 }

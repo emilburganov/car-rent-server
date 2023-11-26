@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarClassController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarModelController;
+use App\Http\Controllers\RentController;
 use App\Http\Controllers\SalonController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,10 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
-    // Client routes
-    Route::middleware('role:1')->group(function() {
-//        Route::get('/cars', [CarController::class, 'index']);
-    });
+    Route::get('/rentals', [RentController::class, 'index']);
 
     // Admin routes
     Route::middleware('role:2')->group(function() {
@@ -44,16 +43,18 @@ Route::middleware('auth')->group(function () {
         Route::patch('/cars/{car}', [CarController::class, 'update']);
         Route::delete('/cars/{car}', [CarController::class, 'destroy']);
 
-        Route::get('/rentals', [CarController::class, 'index']);
-        Route::post('/rentals', [CarController::class, 'create']);
-        Route::get('/rentals/{rent}', [CarController::class, 'show']);
-        Route::patch('/rentals/{rent}', [CarController::class, 'update']);
-        Route::delete('/rentals/{rent}', [CarController::class, 'destroy']);
+        Route::post('/rentals', [RentController::class, 'create']);
+        Route::get('/rentals/{rent}', [RentController::class, 'show']);
+        Route::patch('/rentals/{rent}', [RentController::class, 'update']);
+        Route::delete('/rentals/{rent}', [RentController::class, 'destroy']);
 
         Route::get('/car-models', [CarModelController::class, 'index']);
 
         Route::get('/car-classes', [CarClassController::class, 'index']);
 
         Route::get('/salons', [SalonController::class, 'index']);
+
+        Route::get('/users', [UserController::class, 'index']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
     });
 });

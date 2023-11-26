@@ -4,86 +4,84 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\RentResource;
 use App\Models\Rent;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RentController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $search = $request->search;
+        $token = $request->bearerToken();
+        $user = User::query()->firstWhere('token', $token);
 
-        if (!$search) {
-            $cars = Rent::all();
+        if ($user->role_id === 1) {
+            $rentals = Rent::query()->where('user_id', $user->id)->get();
         } else {
-            $cars = Rent::query()
-                ->where("start", "like", '%' . $search . '%')
-                ->orWhere("end", "like", '%' . $search . '%')
-                ->orWhereRelation('car', 'name', 'like', '%' . $search . '%')
-                ->orWhereRelation('user', 'name', 'like', '%' . $search . '%')
-                ->get();
+            $rentals = Rent::all();
         }
 
         return response()->json(
-            RentResource::collection($cars),
+            RentResource::collection($rentals),
         );
     }
 
     public function create(Request $request): JsonResponse
     {
+        $request->merge(['start' => substr(str_replace('T', ' ', $request->start), 0, -5)]);
+        $request->merge(['end' => substr(str_replace('T', ' ', $request->end), 0, -5)]);
+
         $validator = Validator::make($request->all(), [
-            'car_model_id' => 'required|integer|exists:car_models,id',
-            'year' => 'required|digits:4',
-            'name' => 'required|string|min:3|max:40',
-            'consumption' => 'required|integer|min:1|max:200',
-            'horsepower' => 'required|integer|min:1|max:1000',
-            'car_class_id' => 'required|integer|exists:car_classes,id',
-            'salon_id' => 'required|integer|exists:salons,id',
+            'car_id' => 'required|integer|exists:cars,id',
+            'user_id' => 'required|integer|exists:users,id',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
         ]);
 
         if ($validator->fails()) {
             return $this->validationError($validator->errors());
         }
 
-        $car = Car::query()->create($request->all());
+        $rent = Rent::query()->create($request->all());
 
         return response()->json(
-            new CarResource($car),
+            new RentResource($rent),
         );
     }
 
-    public function show(Car $car): JsonResponse
+    public function show(Rent $rent): JsonResponse
     {
         return response()->json(
-            $car,
+            $rent,
         );
     }
 
-    public function update(Car $car, Request $request): JsonResponse
+    public function update(Rent $rent, Request $request): JsonResponse
     {
+        $request->merge(['start' => substr(str_replace('T', ' ', $request->start), 0, -5)]);
+        $request->merge(['end' => substr(str_replace('T', ' ', $request->end), 0, -5)]);
+
         $validator = Validator::make($request->all(), [
-            'car_model_id' => 'required|integer|exists:car_models,id',
-            'year' => 'required|digits:4',
-            'name' => 'required|string|min:3|max:40',
-            'consumption' => 'required|integer|min:1|max:200',
-            'horsepower' => 'required|integer|min:1|max:1000',
-            'car_class_id' => 'required|integer|exists:car_classes,id',
-            'salon_id' => 'required|integer|exists:salons,id',
+            'car_id' => 'required|integer|exists:cars,id',
+            'user_id' => 'required|integer|exists:users,id',
+            'start' => 'required|date',
+            'end' => 'required|date|after:start',
         ]);
 
         if ($validator->fails()) {
             return $this->validationError($validator->errors());
         }
 
-        $car->update($request->all());
+        $rent->update($request->all());
 
-        return $this->message('Car successful updated.', 202);
+        return $this->message('Rent successful updated.', 202);
     }
 
-    public function destroy(Car $car): JsonResponse
+    public function destroy(Rent $rent): JsonResponse
     {
-        $car->delete();
+        $rent->delete();
 
-        return $this->message('Car successful destroyed.');
+        return $this->message('Rent successful destroyed.');
     }
 }

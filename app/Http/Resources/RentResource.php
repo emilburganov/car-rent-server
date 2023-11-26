@@ -17,7 +17,7 @@ class RentResource extends JsonResource
         return [
             'id' => $this->id,
             'car' => $this->car->name,
-            'client' => $this->client,
+            'client' => $this->user->surname . ' ' . $this->user->name . ' ' . $this->user->patronymic,
             'start' => $this->start,
             'end' => $this->end,
         ];

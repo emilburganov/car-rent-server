@@ -20,4 +20,5 @@ class Rent extends Model
     }
 
     protected $guarded = false;
+    public $timestamps = false;
 }

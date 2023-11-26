@@ -7,6 +7,7 @@ use App\Models\Car;
 use App\Models\CarClass;
 use App\Models\CarModel;
 use App\Models\Country;
+use App\Models\Rent;
 use App\Models\Role;
 use App\Models\Salon;
 use App\Models\User;
@@ -53,5 +54,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Car::factory(10)->create();
+        Rent::factory(10)->create();
     }
 }
