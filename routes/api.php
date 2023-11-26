@@ -33,13 +33,14 @@ Route::middleware('auth')->group(function () {
 
     // Client routes
     Route::middleware('role:1')->group(function() {
-        Route::get('/cars', [CarController::class, 'index']);
+//        Route::get('/cars', [CarController::class, 'index']);
     });
 
     // Admin routes
     Route::middleware('role:2')->group(function() {
         Route::get('/cars', [CarController::class, 'index']);
         Route::post('/cars', [CarController::class, 'create']);
+        Route::get('/cars/{car}', [CarController::class, 'show']);
         Route::patch('/cars/{car}', [CarController::class, 'update']);
         Route::delete('/cars/{car}', [CarController::class, 'destroy']);
 

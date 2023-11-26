@@ -21,7 +21,7 @@ class CarController extends Controller
             $cars = Car::query()
                 ->where("name", "like", '%' . $search . '%')
                 ->orWhereRelation('car_model', 'name', 'like', '%' . $search . '%')
-                ->orWhere('year','like', '%' . $search . '%')
+                ->orWhere('year', 'like', '%' . $search . '%')
                 ->orWhereRelation('car_class', 'name', 'like', '%' . $search . '%')
                 ->orWhereRelation('salon', 'name', 'like', '%' . $search . '%')
                 ->get();
@@ -48,30 +48,37 @@ class CarController extends Controller
             return $this->validationError($validator->errors());
         }
 
-        $car = Car::query()->create($request->only(['name', 'description']));
+        $car = Car::query()->create($request->all());
 
         return response()->json(
             new CarResource($car),
         );
     }
 
+    public function show(Car $car): JsonResponse
+    {
+        return response()->json(
+            $car,
+        );
+    }
+
     public function update(Car $car, Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'car_model_id' => 'required|number|exists:car_models,id',
-            'year' => 'required|number',
+            'car_model_id' => 'required|integer|exists:car_models,id',
+            'year' => 'required|digits:4',
             'name' => 'required|string|min:3|max:40',
-            'consumption' => 'required|string|min:3|max:40',
-            'horsepower' => 'required|number',
-            'car_class_id' => 'required|number|exists:car_classes,id',
-            'salon_id' => 'required|number|exists:salons,id',
+            'consumption' => 'required|integer|min:1|max:200',
+            'horsepower' => 'required|integer|min:1|max:1000',
+            'car_class_id' => 'required|integer|exists:car_classes,id',
+            'salon_id' => 'required|integer|exists:salons,id',
         ]);
 
         if ($validator->fails()) {
             return $this->validationError($validator->errors());
         }
 
-        $car->update($request->only(['name', 'description']));
+        $car->update($request->all());
 
         return $this->message('Car successful updated.', 202);
     }
