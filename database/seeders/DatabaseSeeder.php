@@ -12,6 +12,7 @@ use App\Models\Role;
 use App\Models\Salon;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -43,8 +44,16 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
 
-        User::query()->find(1)->update([
-           'role_id' => 2,
+        User::query()->create([
+            'login' => 'admin',
+            'surname' => 'Бурганов',
+            'name' => 'Эмиль',
+            'patronymic' => 'Эдуардович',
+            'phone' => '+7(999)999-99',
+            'address' => 'Россия, Казань',
+            'birthdate' => '23.03.2005',
+            'role_id' => 2,
+            'password' => Hash::make('12345678'),
         ]);
 
         Salon::query()->create([
