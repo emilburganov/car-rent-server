@@ -19,7 +19,8 @@ class RentController extends Controller
         if ($user->role_id === 1) {
             $rentals = Rent::query()->where('user_id', $user->id)->get();
         } else {
-            $rentals = Rent::all();
+            $search = $request->search;
+            $rentals = Rent::query()->whereRelation('car', 'name', 'like', '%' . $search . '%')->get();
         }
 
         return response()->json(
